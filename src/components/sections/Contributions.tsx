@@ -107,10 +107,10 @@ export default function Contributions() {
       .then((data: GitHubContributions) => {
         const today = new Date();
         today.setHours(23, 59, 59, 999);
-        const tenMonthsAgo = new Date(today);
-        tenMonthsAgo.setMonth(today.getMonth() - 10);
+        const oneYearAgo = new Date(today);
+        oneYearAgo.setFullYear(today.getFullYear() - 1);
         const filtered = data.contributions
-          .filter((d) => new Date(d.date) >= tenMonthsAgo && new Date(d.date) <= today)
+          .filter((d) => new Date(d.date) >= oneYearAgo && new Date(d.date) <= today)
           .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         setGithubDays(filtered);
         setGithubLoading(false);
@@ -165,7 +165,7 @@ export default function Contributions() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const startDate = new Date(today);
-    startDate.setMonth(startDate.getMonth() - 10);
+    startDate.setFullYear(startDate.getFullYear() - 1);
     startDate.setDate(startDate.getDate() + 1);
 
     const map = new Map<string, number>();
@@ -254,7 +254,7 @@ export default function Contributions() {
 
               <footer className="calendar-footer mt-4 flex flex-wrap justify-between items-center gap-4">
                 <div className="text-metallic-silver/80 text-sm">
-                  {activeTotal} {platform === 'github' ? 'contributions' : 'submissions'} in last 10 months
+                  {activeTotal} {platform === 'github' ? 'contributions' : 'submissions'} in last year
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="text-metallic-silver/60 text-xs mr-1">Less</span>

@@ -1025,6 +1025,14 @@
   justify-content: center;
   background: linear-gradient(135deg, rgba(192, 192, 192, 0.9), rgba(160, 160, 160, 0.8));
   color: rgba(26, 26, 26, 0.95);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+a.contact-icon-wrapper:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
 
 .contact-form-card {
