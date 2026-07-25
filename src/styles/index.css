@@ -99,11 +99,6 @@
     overflow-x: clip;
   }
 
-  body.custom-cursor-enabled,
-  body.custom-cursor-enabled * {
-    cursor: none !important;
-  }
-
   h1,
   h2,
   h3,
@@ -226,51 +221,21 @@
   transition: opacity 0.4s ease;
 }
 
-/* ── Cursor Follower ─────────────────────────────────────── */
-.cursor-follower-root {
+/* ── Cursor Follower (water-ripple trail) ───────────────────── */
+.water-ripple-canvas {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
   z-index: 9999;
 }
 
 @media (pointer: coarse) {
-  .cursor-follower-root {
+  .water-ripple-canvas {
     display: none;
   }
-}
-
-.cursor-dot,
-.cursor-blob {
-  position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  will-change: transform, opacity;
-}
-
-.cursor-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 9999px;
-  background: rgba(232, 232, 232, 0.96);
-  box-shadow: 0 0 10px rgba(212, 212, 212, 0.45);
-}
-
-.cursor-blob {
-  width: 40px;
-  height: 40px;
-  border-radius: 9999px;
-  background: radial-gradient(circle, rgba(212, 212, 212, 0.36) 0%, rgba(150, 150, 150, 0.2) 60%, rgba(90, 90, 90, 0.08) 100%);
-  border: 1px solid rgba(192, 192, 192, 0.35);
-  opacity: 0.38;
-  box-shadow: 0 0 32px rgba(192, 192, 192, 0.26);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
 }
 
 /* ── Floating Dock ───────────────────────────────────────── */
@@ -417,6 +382,17 @@
   transform: translateY(-1px);
 }
 
+.nav-cta-outline {
+  background: transparent;
+  border-color: rgba(192, 192, 192, 0.25);
+  color: rgba(192, 192, 192, 0.85);
+}
+
+.nav-cta-outline:hover {
+  border-color: rgba(192, 192, 192, 0.5);
+  color: rgba(235, 235, 235, 0.95);
+}
+
 .hamburger-line {
   background: rgba(214, 214, 214, 0.92);
   transition: all 0.25s ease;
@@ -476,19 +452,20 @@
 .brand-logo {
   width: 44px;
   height: 44px;
-  border-radius: 10px;
-  border: 1px solid rgba(192, 192, 192, 0.3);
-  background: linear-gradient(135deg, rgba(42, 42, 42, 0.8), rgba(26, 26, 26, 0.6));
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--color-metallic-silver);
+  background: transparent;
+  border: none;
   transition:
     transform 0.2s ease,
     filter 0.2s ease;
+}
+
+.brand-logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .brand-logo:hover {
@@ -500,11 +477,61 @@
   .brand-logo {
     width: 38px;
     height: 38px;
-    font-size: 0.82rem;
   }
 }
 
 /* ── Hero ────────────────────────────────────────────────── */
+.name-reveal {
+  position: relative;
+  display: inline-block;
+  color: #141414;
+  -webkit-text-stroke: 1.2px #8f8f8f;
+  text-shadow: 0 0 12px rgba(192, 192, 192, 0.16);
+  background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 40%, #a8a8a8 60%, #d4d4d4 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-size: 0% 100%;
+  background-repeat: no-repeat;
+  background-position: left center;
+  transition: background-size 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+  cursor: default;
+}
+
+.name-reveal::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, #dfdfdf 0%, #b5b5b5 100%);
+  transition: left 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .name-reveal:hover {
+    color: transparent;
+    -webkit-text-stroke-color: transparent;
+    background-size: 100% 100%;
+  }
+
+  .name-reveal:hover::after {
+    left: 100%;
+  }
+}
+
+@media (hover: none) {
+  .name-reveal {
+    color: transparent;
+    -webkit-text-stroke-color: transparent;
+    background-size: 100% 100%;
+  }
+
+  .name-reveal::after {
+    display: none;
+  }
+}
 .floating-chip {
   position: absolute;
   display: flex;
@@ -566,41 +593,6 @@
 }
 
 /* ── Tech Stack ──────────────────────────────────────────── */
-.fan-deck {
-  min-height: 170px;
-  position: relative;
-}
-
-.fan-card {
-  width: 108px;
-  height: 130px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.65rem;
-  border-radius: 14px;
-  border: 1px solid rgba(192, 192, 192, 0.2);
-  background: linear-gradient(160deg, rgba(42, 42, 42, 0.92), rgba(20, 20, 20, 0.92));
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
-  position: absolute;
-  transform-origin: bottom center;
-}
-
-.fan-card span {
-  font-family: var(--font-label);
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--color-metallic-silver);
-}
-
-@media (max-width: 640px) {
-  .fan-card {
-    width: 84px;
-    height: 104px;
-  }
-}
-
 .tech-card {
   will-change: transform, box-shadow;
   background: linear-gradient(135deg, rgba(42, 42, 42, 0.8), rgba(26, 26, 26, 0.6));
@@ -638,84 +630,96 @@
   }
 }
 
-/* ── Featured Work (flip cards) ─────────────────────────────── */
-.project-card {
-  will-change: transform, opacity;
-  background-color: var(--color-bg-secondary);
-  box-shadow:
-    rgba(0, 110, 138, 0.06) 0px 2px 4px 0px,
-    rgba(0, 0, 0, 0.35) 0px 4px 20px 0px;
+/* ── Featured Work (scroll-scrubbed stacked cards, Framer Motion) ── */
+.work-scroll-container {
+  position: relative;
 }
 
-.flip-card {
-  background-color: transparent;
-  height: 280px;
-  perspective: 1000px;
-  border-radius: 24px 24px 0 0;
+.work-sticky-viewport {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
   overflow: hidden;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.flip-card-inner {
+.work-stack-heading {
+  position: absolute;
+  top: calc(64px + clamp(1rem, 3vh, 2rem));
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--container-max);
+  padding-inline: var(--spacing-lg, 1.5rem);
+  font-size: var(--text-h2);
+  z-index: 60;
+}
+
+.work-stack-frame {
   position: relative;
   width: 100%;
   height: 100%;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-style: preserve-3d;
+  padding-top: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
-@media (hover: hover) {
-  .flip-card:hover .flip-card-inner {
-    transform: rotateY(180deg);
-  }
-}
-
-.flip-card-inner.flipped {
-  transform: rotateY(180deg);
-}
-
-.flip-card-front,
-.flip-card-back {
+.work-stack-card {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  border-radius: 24px 24px 0 0;
+  width: 74vw;
+  max-width: 1100px;
+  min-width: min(650px, 92vw);
+  height: 75vh;
+  max-height: 720px;
+  border-radius: 24px;
   overflow: hidden;
-}
-
-.flip-card-front {
-  background: var(--color-bg-secondary);
-}
-
-.flip-front-gradient {
-  background: linear-gradient(to top, rgba(26, 26, 26, 0.95) 0%, rgba(26, 26, 26, 0.5) 35%, transparent 65%);
-}
-
-.hover-hint {
-  color: var(--color-metallic-silver);
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-}
-
-.flip-card-back {
-  transform: rotateY(180deg);
-  background: linear-gradient(145deg, rgba(26, 26, 26, 0.98) 0%, rgba(42, 42, 42, 0.95) 40%, rgba(192, 192, 192, 0.08) 100%);
-  border: 1px solid rgba(192, 192, 192, 0.12);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 1.75rem;
+  background: linear-gradient(150deg, rgba(38, 38, 38, 0.96), rgba(15, 15, 15, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.6);
+  will-change: transform, opacity, filter;
+}
+
+.work-stack-image-wrap {
+  position: relative;
+  flex: 1 1 55%;
+  min-height: 0;
+}
+
+.work-stack-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.work-stack-image-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15, 15, 15, 0.95) 0%, transparent 45%);
+  pointer-events: none;
+}
+
+.work-stack-body {
+  padding: clamp(1.25rem, 3vh, 2rem) clamp(1.5rem, 3vw, 2.5rem);
   overflow-y: auto;
 }
 
-.card-content {
-  background: linear-gradient(135deg, rgba(34, 34, 34, 0.6), rgba(42, 42, 42, 0.3));
-  backdrop-filter: blur(8px);
-  border-radius: 0 0 24px 24px;
-  padding: 1.25rem 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+@media (max-width: 768px) {
+  .work-stack-card {
+    width: 90vw;
+    height: 80vh;
+  }
+
+  .work-stack-heading {
+    font-size: var(--text-h3);
+  }
 }
 
 .tech-tag {
@@ -783,56 +787,46 @@
 }
 
 @media (max-width: 768px) {
-  .flip-card {
-    height: 240px;
-  }
-
-  .tech-stack-row {
-    flex-wrap: wrap;
-    overflow: hidden;
-    max-height: 2.1rem;
-  }
-
-  .flip-card-back {
+  .work-mockup-card {
     padding: 1.25rem;
   }
 }
 
-/* ── Achievements fan / pinned horizontal scroll ────────────── */
-.achievements-stage {
-  overflow: hidden;
-}
-
-.achievements-track {
-  width: max-content;
-}
-
-.achievements-stripes-row,
-.achievements-cards-row {
-  display: grid;
-  gap: 1.25rem;
-}
-
-.stripe {
-  will-change: transform, opacity;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
+/* ── Achievements — tilted scattered card reveal ────────────── */
 .stripe-date {
   color: var(--color-accent-teal-light);
   border-color: rgba(0, 110, 138, 0.25);
   background: linear-gradient(135deg, rgba(0, 77, 97, 0.2), rgba(130, 38, 89, 0.12));
 }
 
-.achievement-card {
+.tilt-card {
   will-change: transform, opacity;
-  width: 20rem;
-  min-height: 22rem;
-  background: linear-gradient(145deg, rgba(34, 34, 34, 0.85), rgba(20, 20, 20, 0.85));
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  width: 19rem;
+  transform-origin: center bottom;
 }
 
-.achievement-icon {
+.tilt-card-face {
+  height: 100%;
+  padding: 1.75rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(192, 192, 192, 0.14);
+  background: linear-gradient(145deg, rgba(38, 38, 38, 0.92), rgba(20, 20, 20, 0.92));
+  box-shadow:
+    0 22px 40px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
+}
+
+.tilt-card:hover .tilt-card-face {
+  transform: rotate(0deg) translateY(-6px) scale(1.02);
+  box-shadow:
+    0 30px 56px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(192, 192, 192, 0.18) inset;
+}
+
+.tilt-card-icon {
   width: 3rem;
   height: 3rem;
   display: flex;
@@ -841,6 +835,8 @@
   border-radius: 0.75rem;
   border: 1px solid rgba(192, 192, 192, 0.2);
   background: rgba(192, 192, 192, 0.06);
+  color: var(--color-metallic-silver);
+  margin-bottom: 1.25rem;
 }
 
 .achievement-tag {
@@ -849,77 +845,20 @@
   border-color: rgba(192, 192, 192, 0.25);
 }
 
-.typing-cursor::after {
-  content: '▊';
-  animation: blink 0.8s step-end infinite;
-  color: var(--color-accent-teal-light);
-  margin-left: 2px;
-  font-size: 0.8em;
-}
-
-.mobile-achievement-card {
-  background: linear-gradient(135deg, rgba(34, 34, 34, 0.8), rgba(26, 26, 26, 0.6));
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-}
-
-.mobile-only {
-  display: none;
-}
-
-@media (max-width: 1100px) {
-  .mobile-only {
-    display: block;
-  }
-  .desktop-only {
-    display: none !important;
-  }
-}
-
-@media (min-width: 1101px) {
-  .desktop-only {
-    display: block;
+@media (max-width: 640px) {
+  .tilt-card {
+    width: 100%;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stripe,
-  .achievement-card {
+  .tilt-card {
     opacity: 1 !important;
     transform: none !important;
   }
 }
 
 /* ── Contributions ───────────────────────────────────────── */
-.cp-chip {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  padding: 0.65rem 1.1rem;
-  border-radius: 0.75rem;
-  border: 1px solid rgba(192, 192, 192, 0.15);
-  background: linear-gradient(135deg, rgba(42, 42, 42, 0.8), rgba(26, 26, 26, 0.6));
-  transition:
-    border-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.cp-chip:hover {
-  border-color: rgba(192, 192, 192, 0.4);
-  transform: translateY(-2px);
-}
-
-.cp-chip-platform {
-  font-family: var(--font-label);
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--color-text-primary);
-}
-
-.cp-chip-rating {
-  font-family: var(--font-label);
-  font-size: 0.72rem;
-  color: var(--color-metallic-silver);
-}
 
 .platform-button {
   background: linear-gradient(135deg, rgba(42, 42, 42, 0.8) 0%, rgba(26, 26, 26, 0.6) 100%);
@@ -944,6 +883,7 @@
 .calendar-container {
   background: linear-gradient(135deg, rgba(42, 42, 42, 0.8), rgba(26, 26, 26, 0.6));
   border: 1px solid rgba(192, 192, 192, 0.15);
+  width: 100%;
 }
 
 .month-label {
@@ -953,15 +893,41 @@
   white-space: nowrap;
 }
 
+.calendar-weeks-row {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+}
+
+.calendar-week-col {
+  display: grid;
+  grid-template-rows: repeat(7, 1fr);
+  gap: 4px;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 130px;
+}
+
 .contribution-cell {
-  width: 11px;
-  height: 11px;
-  border-radius: 2px;
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
   transition: transform 0.15s ease;
 }
 
 .contribution-cell:hover {
-  transform: scale(1.2);
+  transform: scale(1.15);
+}
+
+@media (max-width: 640px) {
+  .calendar-week-col {
+    height: 90px;
+    gap: 2px;
+  }
+
+  .calendar-weeks-row {
+    gap: 2px;
+  }
 }
 
 .legend-cell {
@@ -1118,4 +1084,129 @@
   border: 1px solid rgba(192, 192, 192, 0.3);
   background: linear-gradient(135deg, rgba(42, 42, 42, 0.8), rgba(26, 26, 26, 0.6));
   color: var(--color-metallic-silver);
+}
+
+/* ── Coding Skills Modal ─────────────────────────────────── */
+.skills-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  padding: clamp(1.5rem, 8vh, 5rem) 1.5rem 1.5rem;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.skills-modal {
+  width: 100%;
+  max-width: 640px;
+  padding: 2rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(192, 192, 192, 0.2);
+  background: linear-gradient(150deg, rgba(34, 34, 34, 0.98), rgba(18, 18, 18, 0.98));
+  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.5);
+  margin-bottom: 1.5rem;
+}
+
+.skills-modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  color: var(--color-metallic-silver);
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.skills-modal-close:hover {
+  color: var(--color-text-primary);
+  background: rgba(192, 192, 192, 0.1);
+}
+
+.skills-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.25rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(192, 192, 192, 0.15);
+  background: linear-gradient(135deg, rgba(42, 42, 42, 0.8), rgba(26, 26, 26, 0.6));
+  min-height: 7.5rem;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.skills-card:hover {
+  border-color: rgba(192, 192, 192, 0.4);
+  transform: translateY(-2px);
+}
+
+.skills-card-platform {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.skills-card-handle {
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.skills-card-rating {
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-metallic-silver);
+}
+
+.skills-card-solved {
+  font-family: var(--font-label);
+  font-size: 0.78rem;
+  color: var(--color-accent-teal-light);
+}
+
+.skills-card-extra {
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.skills-card-loading {
+  display: flex;
+  align-items: center;
+  padding-top: 0.5rem;
+}
+
+.skills-card-loading .loading-spinner {
+  width: 22px;
+  height: 22px;
+  border-width: 2px;
+}
+
+.skills-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  font-family: var(--font-label);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  transition: color 0.2s ease;
+}
+
+.skills-card-link:hover {
+  color: var(--color-accent-teal-light);
 }
