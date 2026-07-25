@@ -30,24 +30,6 @@ export const projects: Project[] = [
     imageAlt: 'College Bazar marketplace platform',
   },
   {
-    title: 'Voice AI Finance Agent',
-    description:
-      'Production-oriented, multi-agent voice AI system for personal finance management, supporting voice and text.',
-    features: [
-      'Orchestrator agent routing requests to specialized Finance, Research, and Action agents',
-      'RAG pipeline (FAISS + Sentence-Transformers) for context-aware responses',
-      'Core finance operations: invoicing, transactions, reminders, and budget-goal tracking with spending alerts',
-      'Receipt/PDF ingestion pipeline using OCR + LLM extraction to auto-generate expense entries',
-      'Whisper speech-to-text and gTTS text-to-speech for voice interaction',
-      'Auth, rate limiting, structured logging, and request tracing for production readiness',
-      'Deployed to Render with PostgreSQL for persistence',
-    ],
-    techStack: ['Python', 'FastAPI', 'WebSockets', 'SQLAlchemy', 'OpenAI API', 'FAISS', 'Whisper', 'PostgreSQL', 'Docker'],
-    githubUrl: 'https://github.com/Pratyush2840/Voice-AI-Finance-Agent',
-    imageUrl: 'https://picsum.photos/seed/voice-ai-finance/1200/800',
-    imageAlt: 'Voice AI Finance Agent application',
-  },
-  {
     title: 'Expense Splitter (Expenso)',
     description:
       'Full-stack group expense-splitting app with a graph-based debt-simplification engine.',
@@ -66,22 +48,6 @@ export const projects: Project[] = [
     imageAlt: 'Expenso expense-splitting application',
   },
   {
-    title: 'Personal Portfolio',
-    description:
-      'This site — a React + GSAP portfolio built to showcase projects, skills, and coding activity.',
-    features: [
-      'Scroll-triggered card animations built with GSAP ScrollTrigger',
-      'Live GitHub and LeetCode contribution graphs',
-      'Animated letter-reveal loading sequence and custom cursor',
-      'Dark, jewel-toned design system built with Tailwind CSS v4',
-      'Contact form wired to FormSubmit for direct email delivery',
-    ],
-    techStack: ['React', 'Vite', 'TypeScript', 'GSAP', 'Tailwind CSS'],
-    githubUrl: 'https://github.com/Pratyush2840',
-    imageUrl: 'https://picsum.photos/seed/pratyush-portfolio/1200/800',
-    imageAlt: 'Personal portfolio website',
-  },
-  {
     title: 'DevHire AI',
     description:
       'AI-powered resume analysis tool for job seekers navigating the ATS black box.',
@@ -98,5 +64,39 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/Pratyush2840',
     imageUrl: 'https://picsum.photos/seed/devhire-ai/1200/800',
     imageAlt: 'DevHire AI resume analysis tool',
+  },
+  {
+    title: 'Voice AI Finance Agent',
+    description:
+      'Production-oriented, multi-agent voice AI system for personal finance management, supporting voice and text.',
+    features: [
+      'Orchestrator agent routing requests to specialized Finance, Research, and Action agents',
+      'RAG pipeline (FAISS + Sentence-Transformers) for context-aware responses',
+      'Core finance operations: invoicing, transactions, reminders, and budget-goal tracking with spending alerts',
+      'Receipt/PDF ingestion pipeline using OCR + LLM extraction to auto-generate expense entries',
+      'Whisper speech-to-text and gTTS text-to-speech for voice interaction',
+      'Auth, rate limiting, structured logging, and request tracing for production readiness',
+      'Deployed to Render with PostgreSQL for persistence',
+    ],
+    techStack: ['Python', 'FastAPI', 'WebSockets', 'SQLAlchemy', 'OpenAI API', 'FAISS', 'Whisper', 'PostgreSQL', 'Docker'],
+    githubUrl: 'https://github.com/Pratyush2840/Voice-AI-Finance-Agent',
+    imageUrl: 'https://picsum.photos/seed/voice-ai-finance/1200/800',
+    imageAlt: 'Voice AI Finance Agent application',
+  },
+  {
+    title: 'Personal Portfolio',
+    description:
+      'This site — a React + GSAP portfolio built to showcase projects, skills, and coding activity.',
+    features: [
+      'Scroll-triggered card animations built with GSAP ScrollTrigger',
+      'Live GitHub and LeetCode contribution graphs',
+      'Animated letter-reveal loading sequence and custom cursor',
+      'Dark, jewel-toned design system built with Tailwind CSS v4',
+      'Contact form wired to FormSubmit for direct email delivery',
+    ],
+    techStack: ['React', 'Vite', 'TypeScript', 'GSAP', 'Tailwind CSS'],
+    githubUrl: 'https://github.com/Pratyush2840',
+    imageUrl: 'https://picsum.photos/seed/pratyush-portfolio/1200/800',
+    imageAlt: 'Personal portfolio website',
   },
 ];
