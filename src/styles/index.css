@@ -229,7 +229,10 @@
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 9999;
+  /* Negative z-index paints this behind all normal-flow page content (cards,
+     text, nav) in the same stacking context, so ripples only show through
+     the plain background, not on top of anything with its own background. */
+  z-index: -1;
 }
 
 @media (pointer: coarse) {
