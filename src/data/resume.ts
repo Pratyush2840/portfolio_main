@@ -1,9 +1,9 @@
 export const hero = {
   name: 'Pratyush Singh',
   role: 'Full Stack Developer',
-  greeting: 'Good evening',
+  greeting: 'Good evening,',
   bio: [
-    "B.Tech Computer Science student at IIITDM Jabalpur. I build full-stack web apps end to end — frontend, backend, database, and deployment — and I solve competitive programming problems on the side.",
+    "B.Tech Computer Science student at IIITDM Jabalpur. I build full-stack web apps end to end: frontend, backend, database, and deployment. I also solve competitive programming problems on the side.",
   ],
   tagline: 'Clean code. Full-stack builds. Fewer pain points.',
   resumeUrl: '/assets/PratyushSingh_Resume.pdf',
@@ -16,6 +16,7 @@ export const contact = {
   phone: '+91 74659 87557',
   github: 'https://github.com/Pratyush2840',
   linkedin: 'https://www.linkedin.com/in/pratyush-singh-44162228b/',
+  instagram: 'https://www.instagram.com/pratyush_singh08?igsh=YnFyd28ycDE3OW14&utm_source=qr',
 };
 
 export interface TechItem {
