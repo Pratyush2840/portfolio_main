@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
+import CodingSkillsModal from './CodingSkillsModal';
 
 type SectionId = 'about' | 'achievements' | 'work' | 'tech' | 'problem-solving' | 'education' | 'contact';
 
 const SECTIONS: { id: SectionId; label: string }[] = [
   { id: 'about', label: 'About' },
-  { id: 'achievements', label: 'Achievements' },
   { id: 'work', label: 'Featured Work' },
   { id: 'tech', label: 'Tech Stack' },
+  { id: 'achievements', label: 'Achievements' },
   { id: 'problem-solving', label: 'Contributions' },
   { id: 'education', label: 'Education' },
 ];
@@ -15,6 +16,7 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState<SectionId>('about');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSkillsOpen, setIsSkillsOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 8);
@@ -35,7 +37,7 @@ export default function Navbar() {
       { rootMargin: '-45% 0px -45% 0px', threshold: 0 },
     );
 
-    const ids: SectionId[] = ['about', 'achievements', 'work', 'tech', 'problem-solving', 'education', 'contact'];
+    const ids: SectionId[] = ['about', 'work', 'tech', 'achievements', 'problem-solving', 'education', 'contact'];
     ids.forEach((id) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
@@ -51,10 +53,11 @@ export default function Navbar() {
   };
 
   return (
-    <header className={`navbar-bg fixed left-0 top-0 z-[1000] w-full${isScrolled ? ' navbar-scrolled' : ''}`}>
+    <>
+      <header className={`navbar-bg fixed left-0 top-0 z-[1000] w-full${isScrolled ? ' navbar-scrolled' : ''}`}>
       <div className="mx-auto flex h-[58px] md:h-[62px] lg:h-[64px] max-w-[1280px] items-center px-4 lg:pl-2 lg:pr-8">
         <button className="brand-logo shrink-0" onClick={() => scrollToSection('about')} aria-label="Go to top">
-          PS
+          <img src="/assets/favicon.png" alt="Pratyush Singh logo" className="brand-logo-image" />
         </button>
 
         <nav className="hidden items-center gap-6 lg:flex lg:ml-auto lg:mr-auto">
@@ -69,9 +72,14 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <button className="ml-auto nav-cta hidden lg:inline-flex" onClick={() => scrollToSection('contact')}>
-          Get in Touch
-        </button>
+        <div className="ml-auto hidden lg:flex items-center gap-3">
+          <button className="nav-cta nav-cta-outline" onClick={() => setIsSkillsOpen(true)}>
+            Coding Skills
+          </button>
+          <button className="nav-cta" onClick={() => scrollToSection('contact')}>
+            Contact
+          </button>
+        </div>
 
         <button
           className="ml-auto flex h-9 w-9 items-center justify-center lg:hidden"
@@ -93,11 +101,23 @@ export default function Navbar() {
               {s.label}
             </button>
           ))}
+          <button
+            className="mobile-link"
+            onClick={() => {
+              setIsSkillsOpen(true);
+              setIsMobileMenuOpen(false);
+            }}
+          >
+            Coding Skills
+          </button>
           <button className="mobile-link-cta" onClick={() => scrollToSection('contact')}>
-            Get in Touch
+            Contact
           </button>
         </nav>
       </div>
-    </header>
+      </header>
+
+      <CodingSkillsModal open={isSkillsOpen} onClose={() => setIsSkillsOpen(false)} />
+    </>
   );
 }
