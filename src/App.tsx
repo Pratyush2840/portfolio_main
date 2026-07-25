@@ -21,9 +21,9 @@ export default function App() {
         <Navbar />
         <div id="home" className="w-full min-h-dvh pt-17.5">
           <Hero />
-          <AchievementsFan />
           <FeaturedWork />
           <TechStack />
+          <AchievementsFan />
           <Contributions />
           <Education />
           <GetInTouch />
