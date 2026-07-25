@@ -1,32 +1,45 @@
-# React + TypeScript + Vite
+# Pratyush Singh — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Personal portfolio site built with React, Vite, TypeScript, GSAP, and Framer Motion.
 
-Currently, two official plugins are available:
+**Live site:** _add your deployed URL here_
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Stack
 
-## React Compiler
+- React 19 + TypeScript + Vite
+- Tailwind CSS v4
+- GSAP (ScrollTrigger) for most scroll animations
+- Framer Motion for the Featured Work scroll-scrubbed card stack
+- Live data: GitHub contributions API, LeetCode (via a CORS-enabled mirror, falling back to a committed snapshot), Codeforces API, CodeChef (via a CORS-enabled mirror)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Development
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Production build
+
+```bash
+npm run build   # type-checks with tsc, then builds to dist/
+npm run preview # serve the production build locally
+```
+
+## Deployment
+
+This is a static single-page app — `npm run build` outputs a self-contained `dist/` folder that can be deployed to any static host (Vercel, Netlify, Cloudflare Pages, GitHub Pages, etc.).
+
+**Vercel / Netlify**: import the repo, framework preset "Vite", build command `npm run build`, output directory `dist`. No environment variables are required.
+
+**GitHub Pages**: if deploying under a repo subpath (`username.github.io/repo-name`), set `base: '/repo-name/'` in `vite.config.ts` before building.
+
+### Keeping LeetCode data fresh
+
+`public/data/leetcode.json` is a fallback snapshot used if the live LeetCode API mirror is rate-limited. Refresh it manually with:
+
+```bash
+node scripts/leetcode.cjs
+```
+
+`.github/workflows/leetcode.yml` runs this automatically once a day and commits the update.
