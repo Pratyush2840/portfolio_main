@@ -1,5 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
-import { cpProfiles, githubUsername } from '../../data/resume';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { githubUsername, leetcodeUsername } from '../../data/resume';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface ContributionDay {
   date: string;
@@ -67,7 +71,8 @@ function leetcodeLevel(count: number): number {
 }
 
 export default function Contributions() {
-  const [platform, setPlatform] = useState<Platform>('github');
+  const sectionRef = useRef<HTMLElement>(null);
+  const [platform, setPlatform] = useState<Platform>('leetcode');
 
   const [githubDays, setGithubDays] = useState<ContributionDay[]>([]);
   const [githubLoading, setGithubLoading] = useState(true);
@@ -78,15 +83,34 @@ export default function Contributions() {
   const [leetcodeError, setLeetcodeError] = useState(false);
 
   useEffect(() => {
+    const ctx = gsap.context(() => {
+      const items = sectionRef.current?.querySelectorAll<HTMLElement>('.contrib-anim-item');
+      if (!items || items.length === 0) return;
+
+      gsap.set(items, { autoAlpha: 0, y: 40 });
+      gsap.to(items, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power3.out',
+        stagger: 0.12,
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
     fetch(`https://github-contributions-api.jogruber.de/v4/${githubUsername}`)
       .then((res) => res.json())
       .then((data: GitHubContributions) => {
         const today = new Date();
         today.setHours(23, 59, 59, 999);
-        const oneYearAgo = new Date(today);
-        oneYearAgo.setFullYear(today.getFullYear() - 1);
+        const tenMonthsAgo = new Date(today);
+        tenMonthsAgo.setMonth(today.getMonth() - 10);
         const filtered = data.contributions
-          .filter((d) => new Date(d.date) >= oneYearAgo && new Date(d.date) <= today)
+          .filter((d) => new Date(d.date) >= tenMonthsAgo && new Date(d.date) <= today)
           .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         setGithubDays(filtered);
         setGithubLoading(false);
@@ -96,16 +120,41 @@ export default function Contributions() {
         setGithubLoading(false);
       });
 
-    fetch('/data/leetcode.json')
-      .then((res) => res.json())
-      .then((data: LeetCodeData) => {
-        setLeetcode(data);
+    // LeetCode — try the live CORS-enabled mirror first; that mirror runs on
+    // a free tier with a low per-IP rate limit, so fall back to the
+    // pre-fetched snapshot (kept fresh by the daily GitHub Action) rather
+    // than showing an error whenever it's rate-limited or asleep.
+    const fetchJson = async (url: string) => {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`${url} -> ${res.status}`);
+      return res.json();
+    };
+
+    (async () => {
+      try {
+        const [profile, solved, calendar] = await Promise.all([
+          fetchJson(`https://alfa-leetcode-api.onrender.com/${leetcodeUsername}`),
+          fetchJson(`https://alfa-leetcode-api.onrender.com/${leetcodeUsername}/solved`),
+          fetchJson(`https://alfa-leetcode-api.onrender.com/${leetcodeUsername}/calendar`),
+        ]);
+        setLeetcode({
+          username: leetcodeUsername,
+          ranking: profile.ranking,
+          streak: calendar.streak,
+          totalActiveDays: calendar.totalActiveDays,
+          submissions: solved.acSubmissionNum,
+          calendar: JSON.parse(calendar.submissionCalendar),
+        });
+      } catch {
+        try {
+          setLeetcode(await fetchJson('/data/leetcode.json'));
+        } catch {
+          setLeetcodeError(true);
+        }
+      } finally {
         setLeetcodeLoading(false);
-      })
-      .catch(() => {
-        setLeetcodeError(true);
-        setLeetcodeLoading(false);
-      });
+      }
+    })();
   }, []);
 
   const githubTotal = useMemo(() => githubDays.reduce((sum, d) => sum + d.count, 0), [githubDays]);
@@ -116,7 +165,7 @@ export default function Contributions() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const startDate = new Date(today);
-    startDate.setFullYear(startDate.getFullYear() - 1);
+    startDate.setMonth(startDate.getMonth() - 10);
     startDate.setDate(startDate.getDate() + 1);
 
     const map = new Map<string, number>();
@@ -146,9 +195,9 @@ export default function Contributions() {
   const levelColor = platform === 'github' ? githubLevelColor : leetcodeLevelColor;
 
   return (
-    <section id="problem-solving" className="scroll-mt-28 py-24 px-6 max-md:px-4 max-md:py-16">
+    <section id="problem-solving" ref={sectionRef} className="scroll-mt-28 py-24 px-6 max-md:px-4 max-md:py-16">
       <div className="container-custom">
-        <h2 className="font-heading text-h2 font-semibold text-text-primary mb-6 flex items-center gap-3">
+        <h2 className="contrib-anim-item font-heading text-h2 font-semibold text-text-primary mb-6 flex items-center gap-3">
           <span className="section-icon-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="w-4.5 h-4.5">
               <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -160,17 +209,7 @@ export default function Contributions() {
           Contribution Graph
         </h2>
 
-        {/* Competitive programming stats strip */}
-        <div className="flex flex-wrap gap-4 mb-8">
-          {cpProfiles.map((profile) => (
-            <a key={profile.platform} href={profile.url} target="_blank" rel="noopener noreferrer" className="cp-chip">
-              <span className="cp-chip-platform">{profile.platform}</span>
-              <span className="cp-chip-rating">{profile.rating}</span>
-            </a>
-          ))}
-        </div>
-
-        <div className="flex flex-wrap gap-3 mb-6">
+        <div className="contrib-anim-item flex flex-wrap gap-3 mb-6">
           <button onClick={() => setPlatform('github')} className={`platform-button${platform === 'github' ? ' active' : ''}`}>
             GitHub
           </button>
@@ -179,7 +218,7 @@ export default function Contributions() {
           </button>
         </div>
 
-        <div className="calendar-container p-4 md:p-6 rounded-xl overflow-x-auto">
+        <div className="contrib-anim-item calendar-container p-4 md:p-6 rounded-xl">
           {activeLoading ? (
             <div className="flex items-center justify-center h-[200px]">
               <div className="loading-spinner" />
@@ -188,19 +227,19 @@ export default function Contributions() {
             <div className="flex items-center justify-center h-[200px] text-metallic-silver/60">Failed to load contributions</div>
           ) : (
             <>
-              <div className="month-label-track relative h-5 mb-2 min-w-max">
+              <div className="month-label-track relative h-5 mb-2">
                 {activeWeeks.map((_, i) => {
                   const label = monthLabelForWeek(activeWeeks, i);
                   return label ? (
-                    <span key={i} className="month-label" style={{ left: `calc(${i} * 14px)` }}>
+                    <span key={i} className="month-label" style={{ left: `${(i / activeWeeks.length) * 100}%` }}>
                       {label}
                     </span>
                   ) : null;
                 })}
               </div>
-              <div className="flex gap-[3px] min-w-max">
+              <div className="calendar-weeks-row">
                 {activeWeeks.map((week, wi) => (
-                  <div key={wi} className="grid grid-rows-7 gap-[3px]">
+                  <div key={wi} className="calendar-week-col">
                     {week.map((day) => (
                       <div
                         key={day.date}
@@ -215,7 +254,7 @@ export default function Contributions() {
 
               <footer className="calendar-footer mt-4 flex flex-wrap justify-between items-center gap-4">
                 <div className="text-metallic-silver/80 text-sm">
-                  {activeTotal} {platform === 'github' ? 'contributions' : 'submissions'} in last year
+                  {activeTotal} {platform === 'github' ? 'contributions' : 'submissions'} in last 10 months
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="text-metallic-silver/60 text-xs mr-1">Less</span>
