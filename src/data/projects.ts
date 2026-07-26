@@ -5,7 +5,6 @@ export interface Project {
   techStack: string[];
   githubUrl: string;
   liveUrl?: string;
-  /** Placeholder until real screenshots are supplied — swap for a real image path in /public/assets/projects/ */
   imageUrl: string;
   imageAlt: string;
 }
@@ -27,7 +26,7 @@ export const projects: Project[] = [
     techStack: ['React 19', 'Vite', 'Node.js', 'Express 5', 'PostgreSQL', 'JWT', 'Google OAuth', 'GSAP'],
     githubUrl: 'https://github.com/Pratyush2840/CollegeBazar',
     liveUrl: 'https://college-bazar-seven.vercel.app/',
-    imageUrl: 'https://picsum.photos/seed/college-bazar/1200/800',
+    imageUrl: '/assets/projects/college-bazar.png',
     imageAlt: 'College Bazar marketplace platform',
   },
   {
@@ -45,7 +44,7 @@ export const projects: Project[] = [
     ],
     techStack: ['Django REST Framework', 'PostgreSQL', 'Redis', 'Celery', 'React 19', 'TypeScript', 'Stripe API', 'Claude API', 'Docker'],
     githubUrl: 'https://github.com/Pratyush2840/Expeneso',
-    imageUrl: 'https://picsum.photos/seed/expenso/1200/800',
+    imageUrl: '/assets/projects/expenso.png',
     imageAlt: 'Expenso expense-splitting application',
   },
   {
@@ -64,7 +63,7 @@ export const projects: Project[] = [
     techStack: ['React', 'Vite', 'Tailwind CSS', 'Node.js', 'Express', 'MongoDB', 'Google Gemini API', 'JWT'],
     githubUrl: 'https://github.com/Pratyush2840/devhire',
     liveUrl: 'https://devhire-ai-kohl.vercel.app',
-    imageUrl: 'https://picsum.photos/seed/devhire-ai/1200/800',
+    imageUrl: '/assets/projects/devhire.png',
     imageAlt: 'DevHire AI resume analysis tool',
   },
   {
@@ -82,6 +81,7 @@ export const projects: Project[] = [
     ],
     techStack: ['Python', 'FastAPI', 'WebSockets', 'SQLAlchemy', 'OpenAI API', 'FAISS', 'Whisper', 'PostgreSQL', 'Docker'],
     githubUrl: 'https://github.com/Pratyush2840/Voice-AI-Finance-Agent',
+    // Placeholder until a real screenshot is supplied.
     imageUrl: 'https://picsum.photos/seed/voice-ai-finance/1200/800',
     imageAlt: 'Voice AI Finance Agent application',
   },
@@ -99,7 +99,7 @@ export const projects: Project[] = [
     techStack: ['React', 'Vite', 'TypeScript', 'GSAP', 'Tailwind CSS'],
     githubUrl: 'https://github.com/Pratyush2840/portfolio_main',
     liveUrl: 'https://portfolio-main-six-sooty.vercel.app/',
-    imageUrl: 'https://picsum.photos/seed/pratyush-portfolio/1200/800',
+    imageUrl: '/assets/projects/portfolio.png',
     imageAlt: 'Personal portfolio website',
   },
 ];
