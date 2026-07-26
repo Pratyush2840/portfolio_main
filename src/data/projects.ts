@@ -44,6 +44,7 @@ export const projects: Project[] = [
     ],
     techStack: ['Django REST Framework', 'PostgreSQL', 'Redis', 'Celery', 'React 19', 'TypeScript', 'Stripe API', 'Claude API', 'Docker'],
     githubUrl: 'https://github.com/Pratyush2840/Expeneso',
+    liveUrl: 'https://expenso-opal.vercel.app',
     imageUrl: '/assets/projects/expenso.png',
     imageAlt: 'Expenso expense-splitting application',
   },
