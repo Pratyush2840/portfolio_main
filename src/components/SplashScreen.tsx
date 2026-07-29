@@ -10,7 +10,7 @@ interface SplashLetter {
 const BASE_NAME = ['P', 'R', 'A', 'T', 'Y', 'U', 'S', 'H'];
 const REVEAL_DELAY = 130; // ms between letters
 const CURSOR_DURATION = 300; // ms cursor blinks per letter
-const TOTAL_DURATION = 2000; // fixed minimum splash duration
+const TOTAL_DURATION = 3000; // fixed minimum splash duration
 const FADE_DURATION = 600;
 
 interface SplashScreenProps {
