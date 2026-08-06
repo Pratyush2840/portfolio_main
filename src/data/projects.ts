@@ -11,6 +11,25 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: 'AI Interviewer',
+    description:
+      'Full-stack AI-powered mock interview platform that parses your resume, generates tailored questions via a RAG pipeline, and delivers real-time follow-ups with detailed AI feedback.',
+    features: [
+      'Resume parsing: PDF upload → text extraction → semantic chunking',
+      'RAG pipeline with LangChain + OpenAI embeddings for context-aware question generation',
+      'Real-time interview follow-up questions streamed live via Socket.io',
+      'AI evaluation with per-answer scoring and feedback using Groq LLM',
+      'Dashboard with interview history, scores, and performance analytics',
+      'Job Board with live listings from the Adzuna API',
+      'JWT-based auth, Cloudinary resume storage, and Redis caching for fast job search/API responses',
+    ],
+    techStack: ['React', 'Node.js', 'Express', 'Socket.io', 'LangChain', 'OpenAI API', 'Groq LLM', 'Redis', 'Cloudinary', 'JWT'],
+    githubUrl: 'https://github.com/Pratyush2840/ai-interviewer',
+    liveUrl: 'https://ai-interviewer-lake-six.vercel.app',
+    imageUrl: '/assets/projects/ai-interviewer.png',
+    imageAlt: 'AI Interviewer dashboard',
+  },
+  {
     title: 'College Bazar',
     description:
       'Full-stack peer-to-peer marketplace for college students to list, browse, and bid on products.',
